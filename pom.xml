@@ -15,12 +15,32 @@
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.kohsuke/github-api -->
+
         <dependency>
             <groupId>org.kohsuke</groupId>
             <artifactId>github-api</artifactId>
             <version>1.92</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.6.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>3.3.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt</artifactId>
+            <version>1.9.2</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <reporting>
@@ -32,6 +52,7 @@
             </plugin>
         </plugins>
     </reporting>
+
     <build>
         <plugins>
             <plugin>

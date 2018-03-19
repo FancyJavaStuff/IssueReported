@@ -1,13 +1,11 @@
 package ch.rs.IssueReported;
 
-import ch.rs.IssueReported.reporter.ReportingUnit;
+import ch.rs.IssueReported.libhandler.Initializer;
 
 public class main {
 
-    public static void main(String args[]){
-        ReportingUnit repo = new ReportingUnit();
-        repo.reportHash();
-        System.out.println(repo.hashCode());
+    public static void main (String args[]){
+        Thread t = new Thread(new Initializer());
+        t.start();
     }
-
 }
