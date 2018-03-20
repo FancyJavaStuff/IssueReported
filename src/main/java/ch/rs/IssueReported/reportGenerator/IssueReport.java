@@ -1,6 +1,5 @@
 package ch.rs.IssueReported.reportGenerator;
 
-import javax.xml.soap.Text;
 
 public class IssueReport {
 
@@ -8,7 +7,26 @@ public class IssueReport {
     private String text;
     private int hashCode;
 
-    private void generateReport(){
+    public IssueReport(){
+        generateReport();
+    }
+
+    public IssueReport(Exception e){
 
     }
+
+    private void generateReport(){
+        title = "Testreport";
+        hashCode = this.hashCode();
+        text = "This is a test Report. Its supposed to be used to experiment with the GitHub API.";
+    }
+
+    public String getTitle(){
+        return title;
+    }
+
+    public String getBody(){
+        return text + "\n" + "hasCode: " + hashCode;
+    }
+
 }

@@ -17,10 +17,11 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.kohsuke</groupId>
-            <artifactId>github-api</artifactId>
-            <version>1.92</version>
+            <groupId>org.eclipse.mylyn.github</groupId>
+            <artifactId>org.eclipse.egit.github.core</artifactId>
+            <version>2.1.5</version>
         </dependency>
+
 
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
