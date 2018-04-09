@@ -1,26 +1,28 @@
 package ch.rs.IssueReported.reporter;
 
 import ch.rs.IssueReported.credentials.Account;
-import ch.rs.IssueReported.credentials.CredentialsStore;
 import ch.rs.IssueReported.reportGenerator.IssueReport;
+import ch.rs.IssueReported.util.VariableAnalyzer;
 import org.kohsuke.github.*;
 
 import java.io.IOException;
 
-public class ReportingUnitNew {
+/**
+ * https://github.com/git/git/blob/master/README#L18-L20
+ * ^use above link to highlight lines in code. This will allow the reporter
+ * to create direct links to the line that caused the issue.
+ *
+ */
+
+public class ReportingUnit {
 
     private String username;
     private String password;
-    private Class<? extends CredentialsStore> credentialStore;
+    private VariableAnalyzer censoringMode = VariableAnalyzer.NORMAL;
     GitHub github;
     GHRepository repo;
 
-    public <T extends CredentialsStore> void setCredentialStore(Class<T> credentialStore){
-        this.credentialStore = credentialStore;
-
-    }
-
-    public ReportingUnitNew(Account account) {
+    public ReportingUnit(Account account) {
         this.username = account.getUsername();
         password = account.getPassword();
         try {
@@ -34,22 +36,6 @@ public class ReportingUnitNew {
         repo = getRepository(owner, repositoryName);
     }
 
-    public void reportHash() {
-
-    }
-
-    private void createErrorHash(){
-
-    }
-
-    private void submitNewIssue(){
-
-    }
-
-    private void submitExistingIssue(){
-
-    }
-
     private GHRepository getRepository(String owner, String repository){
         try {
             return github.getRepository(owner + "/" + repository);
@@ -59,6 +45,9 @@ public class ReportingUnitNew {
         }
     }
 
+    public String createText(){
+
+    }
 
     private GHIssue issueExist(String hashCode){
 
@@ -95,6 +84,10 @@ public class ReportingUnitNew {
         }
     }
 
+    private String getCause(Exception e){
+        return censoringMode.getCausingObject(e);
+    }
+
     private GHIssue getIssue(int issueId) {
         try {
             return repo.getIssue(issueId);
@@ -102,6 +95,10 @@ public class ReportingUnitNew {
             System.out.println("getIssue " + e.getMessage());
             return new GHIssue();
         }
+    }
+
+    public void setCensoring(VariableAnalyzer mode){
+        censoringMode = mode;
     }
 
     private boolean checkErrorHash(){
