@@ -2,7 +2,7 @@ package ch.rs.IssueReported.reporter;
 
 import ch.rs.IssueReported.credentials.Account;
 import ch.rs.IssueReported.reportGenerator.IssueReport;
-import ch.rs.IssueReported.util.VariableAnalyzer;
+import ch.rs.IssueReported.tools.text.CensorLevel;
 import org.kohsuke.github.*;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class ReportingUnit {
 
     private String username;
     private String password;
-    private VariableAnalyzer censoringMode = VariableAnalyzer.NORMAL;
+    private CensorLevel censoringMode = CensorLevel.NORMAL;
     GitHub github;
     GHRepository repo;
 
@@ -38,15 +38,13 @@ public class ReportingUnit {
 
     private GHRepository getRepository(String owner, String repository){
         try {
+            // Prints what exception has been thrown
+            System.out.println(new Exception() e);
             return github.getRepository(owner + "/" + repository);
         } catch (IOException e) {
             System.out.println("getRepository " + e.getMessage());
             return null;
         }
-    }
-
-    public String createText(){
-
     }
 
     private GHIssue issueExist(String hashCode){
@@ -97,7 +95,7 @@ public class ReportingUnit {
         }
     }
 
-    public void setCensoring(VariableAnalyzer mode){
+    public void setCensoring(CensorLevel mode){
         censoringMode = mode;
     }
 

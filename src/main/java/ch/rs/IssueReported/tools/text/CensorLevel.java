@@ -1,6 +1,6 @@
-package ch.rs.IssueReported.util;
+package ch.rs.IssueReported.tools.text;
 
-public enum VariableAnalyzer {
+public enum CensorLevel {
 
 
 
@@ -17,12 +17,10 @@ public enum VariableAnalyzer {
 
         @Override
         public String getCausingObject(Exception e){
-            return CENSORED_TEXT;
+            return "<censored>";
         }
 
     };
-
-    private static final String CENSORED_TEXT = "<censored>";
 
     public String getCausingObject(Exception e){
         return e.getMessage();
