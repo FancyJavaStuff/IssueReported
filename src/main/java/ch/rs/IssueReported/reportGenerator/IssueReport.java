@@ -1,44 +1,130 @@
 package ch.rs.IssueReported.reportGenerator;
 
+import ch.rs.IssueReported.tools.text.CensorLevel;
+import ch.rs.IssueReported.tools.text.DetailLevel;
 
 public class IssueReport {
 
-    private String title;
-    private String text;
-    private int hashCode;
+    private final String NEW_ISSUE = "A new Exception has been thrown: ";
+    private final String EXISTING_ISSUE = "This Exception has occurred again: ";
+    private final String DETAIL_LEVEL = "The set detail level is: ";
+    private final String CENSORING_MODE = "The set Censor Mode is: ";
+    private static final String LINE_SEPARATOR = "=============================";
+    
+    private final String NEW_ISSUE_TITLE ="Issue ";
+    
+    private final String ISSUE_HASH = " [IH]";
+    
+    private DetailLevel textDetail = DetailLevel.DETAILED;
+    private CensorLevel censorMode = CensorLevel.NORMAL;
 
-    public IssueReport(){
-        generateReport();
-    }
+    private Exception savedException;
+    
+    private String title;
+
+    /**
+     * To compare Issues, the HashCode should be generated out of
+     * the line number, the class it happened in and the thrown exception
+     * This way, one can change Detial level aswell as Censoring,
+     * and the issue will still report to the already existing issue on Github.
+     */
+    private int issueHash;
+    
+    private final String NEWLINE = System.lineSeparator();
+    
+    private StringBuilder textGenerator;
 
     public IssueReport(Exception e){
-        generateTitle(e);
+        savedException = e;
+        generateIssueHash();
     }
 
-    private  void generateTitle(Exception e){
-        String causeClass[] = e.getClass().toString().split("\\.");
-        title = causeClass[causeClass.length-1];
-        System.out.println(title);
+    public void generateNewIssueText(){
+        generateIssueStringBuilder();
+        generateIssueTitle();
+        generateBody();
+    };
+    
+    public void generatCommentOnIssueText(){
+        generateCommentStringBuilder();
+        generateBody();
+    };
+    
+    private void generateBody(){
+        for(StackTraceElement ste : savedException.getStackTrace()){
+            textGenerator.append(textDetail.getDetails(ste));
+        }
     }
-
-    private void generateReport(){
-        title = "Testreport";
-        text = "This is a different test Report. Its supposed to be used to experiment with the GitHub API.";
-        hashCode = text.hashCode();
+    
+    private void generateIssueTitle(){
+        title = new StringBuilder()
+                .append(NEW_ISSUE_TITLE)
+                .append(savedException)
+                .append(ISSUE_HASH)
+                .append(issueHash)
+                .toString();
     }
-
-    public String getTitle(){
-        return "[IR]" + title + " [IH]" + hashCode;
+    
+    private void generateIssueStringBuilder(){
+        textGenerator = new StringBuilder()
+                            .append(NEW_ISSUE)
+                            .append(savedException.getClass())
+                            .append(NEWLINE)
+                            .append(DETAIL_LEVEL)
+                            .append(textDetail.name())
+                            .append(NEWLINE)
+                            .append(CENSORING_MODE)
+                            .append(censorMode.name())
+                            .append(NEWLINE)
+                            .append(LINE_SEPARATOR)
+                            .append(NEWLINE);
+    }
+    
+    private void generateCommentStringBuilder(){
+        textGenerator = new StringBuilder()
+                            .append(EXISTING_ISSUE)
+                            .append(savedException.getClass())
+                            .append(NEWLINE)
+                            .append(DETAIL_LEVEL)
+                            .append(textDetail.name())
+                            .append(NEWLINE)
+                            .append(CENSORING_MODE)
+                            .append(censorMode.name())
+                            .append(NEWLINE)
+                            .append(LINE_SEPARATOR)
+                            .append(NEWLINE);
+    }
+    
+    private void generateIssueHash(){
+        issueHash = new StringBuilder()
+                        .append(savedException.getClass())
+                        .append(savedException.getStackTrace()[0].getLineNumber())
+                        .append(savedException.getStackTrace()[0].getClassName())
+                        .toString().hashCode();
     }
 
     public String getBody(){
-        return text;
+        return textGenerator.toString();
+    }
+    
+    public int getIssueHash(){
+        return issueHash;
     }
 
-    public String getHashString(){ return String.valueOf(hashCode);}
+    public String getTitle(){
+        return title;
+    }
 
-    public String getCommentBody(){
-        return "This Error has occured again in the following circumstances:\n" + text;
+    private String getCause(Exception e){
+        return censorMode.getCausingObject(e);
+    }
+
+    public void setCensorMode(CensorLevel mode){
+        censorMode = mode;
+    }
+
+    public void setDetailLevel(DetailLevel level){ 
+        textDetail = level;
     }
 
 }

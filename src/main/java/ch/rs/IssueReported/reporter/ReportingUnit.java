@@ -32,14 +32,13 @@ public class ReportingUnit {
         }
     }
 
+
     public void setRepository(String owner, String repositoryName){
         repo = getRepository(owner, repositoryName);
     }
 
     private GHRepository getRepository(String owner, String repository){
         try {
-            // Prints what exception has been thrown
-            System.out.println(new Exception() e);
             return github.getRepository(owner + "/" + repository);
         } catch (IOException e) {
             System.out.println("getRepository " + e.getMessage());
@@ -47,11 +46,11 @@ public class ReportingUnit {
         }
     }
 
-    private GHIssue issueExist(String hashCode){
-
+    private GHIssue issueExist(int hashCode){
         try {
             for (GHIssue issue : repo.getIssues(GHIssueState.OPEN)) {
-                if(issue.getTitle().split("IH]")[1].equals(hashCode)){
+                //IF YOU USE BRACES READ UP ON FORMATTING FIRST
+                if(issue.getTitle().split("IH]")[1].equals(String.valueOf(hashCode))){
                     return  issue;
                 }
             }
@@ -63,17 +62,20 @@ public class ReportingUnit {
     }
 
 
-    public void reportIssueToRepository(IssueReport  issueReport){
-        GHIssue issue = issueExist(issueReport.getHashString());
+    public void reportIssueToRepository(Exception exception){
+        IssueReport issueReport = new IssueReport(exception);
+        GHIssue issue = issueExist(issueReport.getIssueHash());
         if(issue.getTitle() != null){
             try {
-                issue.comment(issueReport.getCommentBody());
+                issueReport.generatCommentOnIssueText();
+                issue.comment(issueReport.getBody());
             } catch (IOException e){
                 System.out.println("reportIssueToRepository " + e.getMessage());
             }
             return;
         }
         try {
+            issueReport.generateNewIssueText();
             GHIssueBuilder issueBuilder = repo.createIssue(issueReport.getTitle());
             issueBuilder.body(issueReport.getBody());
             issueBuilder.create();

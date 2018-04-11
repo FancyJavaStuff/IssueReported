@@ -19,7 +19,9 @@ public enum DetailLevel {
                     .append(NEWLINE)
                     .append(FILE_NAME)
                     .append(ste.getFileName())
+                    .append(NEWLINE)
                     .append(LINE_SEPARATOR)
+                    .append(NEWLINE)
                     .toString();
         }
     },
@@ -38,7 +40,9 @@ public enum DetailLevel {
                     .append(NEWLINE)
                     .append(FILE_NAME)
                     .append(ste.getFileName())
+                    .append(NEWLINE)
                     .append(LINE_SEPARATOR)
+                    .append(NEWLINE)
                     .toString();
         }
     },
@@ -54,7 +58,9 @@ public enum DetailLevel {
                     .append(NEWLINE)
                     .append(CLASS_NAME)
                     .append(ste.getClassName())
+                    .append(NEWLINE)
                     .append(LINE_SEPARATOR)
+                    .append(NEWLINE)
                     .toString();
         }
     },
@@ -62,13 +68,15 @@ public enum DetailLevel {
     CRITICAL {
         public String getDetails(StackTraceElement ste) {
             return new StringBuilder()
-                .append(FUNCTION_NAME)
-                .append(ste.getMethodName())
-                .append(NEWLINE)
-                .append(CLASS_NAME)
-                .append(ste.getClassName())
-                .append(LINE_SEPARATOR)
-                .toString();
+                    .append(FUNCTION_NAME)
+                    .append(ste.getMethodName())
+                    .append(NEWLINE)
+                    .append(CLASS_NAME)
+                    .append(ste.getClassName())
+                    .append(NEWLINE)
+                    .append(LINE_SEPARATOR)
+                    .append(NEWLINE)
+                    .toString();
         }
     };
 
@@ -76,7 +84,7 @@ public enum DetailLevel {
     private static final String IS_NATIVE = "Is function native: ";
     private static final String CLASS_NAME = "Class name: ";
     private static final String FILE_NAME = "File name: ";
-    private static final String AT_LINE = "Error occured on line: ";
+    private static final String AT_LINE = "Error occurred on line: ";
     private static final String NEWLINE = System.lineSeparator();
     private static final String LINE_SEPARATOR = "=============================";
 

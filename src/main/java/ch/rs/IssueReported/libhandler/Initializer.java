@@ -20,9 +20,9 @@ public class Initializer implements Runnable {
         account = new Account("", "");
         ReportingUnit rUnit = new ReportingUnit(account);
         rUnit.setRepository(owner, repository);
-        rUnit.reportIssueToRepository(new IssueReport());
-        new IssueReport(new IOException());
-        new IssueReport(new NullPointerException());
+        rUnit.reportIssueToRepository(new NullPointerException());
+        rUnit.reportIssueToRepository(new IOException());
+        rUnit.reportIssueToRepository(new IndexOutOfBoundsException());
 
         }
 
