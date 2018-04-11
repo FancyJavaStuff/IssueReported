@@ -19,7 +19,7 @@ public enum DetailLevel {
                     .append(NEWLINE)
                     .append(FILE_NAME)
                     .append(ste.getFileName())
-                    .append(NEWLINE)
+                    .append(LINE_SEPARATOR)
                     .toString();
         }
     },
@@ -38,7 +38,7 @@ public enum DetailLevel {
                     .append(NEWLINE)
                     .append(FILE_NAME)
                     .append(ste.getFileName())
-                    .append(NEWLINE)
+                    .append(LINE_SEPARATOR)
                     .toString();
         }
     },
@@ -54,7 +54,7 @@ public enum DetailLevel {
                     .append(NEWLINE)
                     .append(CLASS_NAME)
                     .append(ste.getClassName())
-                    .append(NEWLINE)
+                    .append(LINE_SEPARATOR)
                     .toString();
         }
     },
@@ -67,7 +67,7 @@ public enum DetailLevel {
                 .append(NEWLINE)
                 .append(CLASS_NAME)
                 .append(ste.getClassName())
-                .append(NEWLINE)
+                .append(LINE_SEPARATOR)
                 .toString();
         }
     };
@@ -78,6 +78,7 @@ public enum DetailLevel {
     private static final String FILE_NAME = "File name: ";
     private static final String AT_LINE = "Error occured on line: ";
     private static final String NEWLINE = System.lineSeparator();
+    private static final String LINE_SEPARATOR = "=============================";
 
     public abstract String getDetails(StackTraceElement ste);
 
