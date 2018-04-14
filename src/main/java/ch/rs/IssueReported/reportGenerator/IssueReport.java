@@ -9,7 +9,8 @@ public class IssueReport {
     private final String EXISTING_ISSUE = "This Exception has occurred again: ";
     private final String DETAIL_LEVEL = "The set detail level is: ";
     private final String CENSORING_MODE = "The set Censor Mode is: ";
-    private static final String LINE_SEPARATOR = "=============================";
+    private final String CAUSE = "The cause for this Exception was: ";
+    private final String TITLE_FORMATTING = "##";
     
     private final String NEW_ISSUE_TITLE ="Issue ";
     
@@ -45,7 +46,7 @@ public class IssueReport {
         generateBody();
     };
     
-    public void generatCommentOnIssueText(){
+    public void generateCommentOnIssueText(){
         generateCommentStringBuilder();
         generateBody();
     };
@@ -59,7 +60,7 @@ public class IssueReport {
     private void generateIssueTitle(){
         title = new StringBuilder()
                 .append(NEW_ISSUE_TITLE)
-                .append(savedException)
+                .append(savedException.getClass())
                 .append(ISSUE_HASH)
                 .append(issueHash)
                 .toString();
@@ -70,13 +71,16 @@ public class IssueReport {
                             .append(NEW_ISSUE)
                             .append(savedException.getClass())
                             .append(NEWLINE)
+                            .append(CAUSE)
+                            .append(censorMode.getCausingObject(savedException))
+                            .append(NEWLINE)
                             .append(DETAIL_LEVEL)
                             .append(textDetail.name())
                             .append(NEWLINE)
                             .append(CENSORING_MODE)
                             .append(censorMode.name())
                             .append(NEWLINE)
-                            .append(LINE_SEPARATOR)
+                            .append(TITLE_FORMATTING)
                             .append(NEWLINE);
     }
     
@@ -85,13 +89,16 @@ public class IssueReport {
                             .append(EXISTING_ISSUE)
                             .append(savedException.getClass())
                             .append(NEWLINE)
+                            .append(CAUSE)
+                            .append(censorMode.getCausingObject(savedException))
+                            .append(NEWLINE)
                             .append(DETAIL_LEVEL)
                             .append(textDetail.name())
                             .append(NEWLINE)
                             .append(CENSORING_MODE)
                             .append(censorMode.name())
                             .append(NEWLINE)
-                            .append(LINE_SEPARATOR)
+                            .append(TITLE_FORMATTING)
                             .append(NEWLINE);
     }
     

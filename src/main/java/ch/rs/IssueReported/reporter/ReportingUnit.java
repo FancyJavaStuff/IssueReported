@@ -19,6 +19,7 @@ public class ReportingUnit {
     private String username;
     private String password;
     private CensorLevel censoringMode = CensorLevel.NORMAL;
+    private GHBranch branch;
     GitHub github;
     GHRepository repo;
 
@@ -32,9 +33,24 @@ public class ReportingUnit {
         }
     }
 
+    public void setBranch(String branchName){
+        try {
+            this.branch = repo.getBranch(branchName);
+            GHContent content = branch.getOwner().getFileContent("Initializer.java");
+            System.out.println(content.getHtmlUrl());
+        } catch (IOException e) {
+            System.out.println("SetBranch threw an Exception " + e.getMessage());
+        }
+    }
+
 
     public void setRepository(String owner, String repositoryName){
         repo = getRepository(owner, repositoryName);
+            try {
+                branch = repo.getBranch(repo.getDefaultBranch());
+            } catch (IOException e) {
+                System.out.println("set Repo Error : " + e.getMessage());
+            }
     }
 
     private GHRepository getRepository(String owner, String repository){
@@ -67,7 +83,7 @@ public class ReportingUnit {
         GHIssue issue = issueExist(issueReport.getIssueHash());
         if(issue.getTitle() != null){
             try {
-                issueReport.generatCommentOnIssueText();
+                issueReport.generateCommentOnIssueText();
                 issue.comment(issueReport.getBody());
             } catch (IOException e){
                 System.out.println("reportIssueToRepository " + e.getMessage());
@@ -87,6 +103,7 @@ public class ReportingUnit {
     private String getCause(Exception e){
         return censoringMode.getCausingObject(e);
     }
+
 
     private GHIssue getIssue(int issueId) {
         try {
